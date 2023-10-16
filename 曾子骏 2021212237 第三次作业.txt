@@ -1,0 +1,35 @@
+以下拷贝自word，丢失了原来的格式排版，请老师谅解
+
+选择<canvas>元素来进行更深入的研究。<canvas>是HTML5中的一个重要DOM元素，它提供了一种在网页上绘制图形的方式，可以用于制作图形、动画、数据可视化等。
+
+首先查看MDN的<canvas>元素的文档，以了解如何使用它：https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas
+
+然后，找一个使用<canvas>元素的网页示例：
+
+示例网页：绘制一个简单的矩形
+
+URL: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas
+在上述示例网页中，<canvas>元素用于创建一个绘图区域。它使用JavaScript来操作和绘制图形。以下是如何使用<canvas>元素的一些关键步骤：
+
+HTML中的<canvas>元素：
+
+html
+<canvas id="myCanvas" width="200" height="100"></canvas>
+这是一个<canvas>元素的基本定义，它具有id属性，以便在JavaScript中引用它，并且定义了宽度和高度。
+
+JavaScript中的绘图：
+
+javascript
+const canvas = document.getElementById("myCanvas");
+const context = canvas.getContext("2d");
+
+context.fillStyle = "blue";
+context.fillRect(10, 10, 150, 80);
+通过getElementById方法获取<canvas>元素的引用。
+使用getContext方法来获取绘图上下文。在这里，我们使用了"2d"来获取2D绘图上下文。
+使用绘图上下文的方法和属性来创建图形。在这个例子中，我们设置了填充颜色为蓝色，然后使用fillRect方法绘制一个蓝色矩形。
+绘制结果：
+
+执行上述JavaScript代码后，<canvas>元素上将显示一个蓝色矩形，坐标为(10, 10)，宽度为150，高度为80。
+
+这个示例展示了如何使用<canvas>元素在网页上创建和操作图形。<canvas>元素非常强大，可以用于绘制各种图形、图表、动画等，是Web开发中的一个重要工具。我们可以在MDN的文档中找到更多关于<canvas>元素的信息，以便更深入地了解它的功能和用法。
