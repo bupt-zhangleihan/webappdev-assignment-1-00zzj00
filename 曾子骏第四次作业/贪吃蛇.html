@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>贪吃蛇开始制作</title>
+</head>
+<style>
+    canvas{
+       background-color:rgba(20,20,20,1);
+       display: block;/*画布是行内标签，直接设置边距居中没效果，要加上一个block*/
+        margin: 100px auto;
+    }
+    </style>
+<body>    
+    <canvas width="600"  height="600"></canvas>
+    <script>
+/*20*20格， 每格30px宽高*/
+        var canvas=document.querySelector('canvas');
+        let tools= canvas.getContext('2d');//2d的意思是平面绘制
+ 
+        // 定义食物的位置，设置初始值
+      var x=0;
+      var y=0;
+     
+        //添加一个标记，标记食物有没有被吃掉
+    let play=false;
+  var snake=[{x:3,y:0},{x:2,y:0},{x:1,y:0}]; //初始蛇身长度和蛇头位置
+        //蛇头运动初始方向
+        var n=1;
+        var m=0;
+        
+        // 操控蛇头运动方向 修正
+        document.addEventListener('keydown',function(e){
+           var dn=snake[0].x-snake[1].x;
+           var dm=snake[0].y-snake[1].y;
+        if(e.keyCode==37&&n!=1&&m!=0){
+            if(dn==1&&dm==0){return;}
+            n=-1;
+            m=0; 
+		}else if(e.keyCode==38&&n!=0&&m!=1){
+                if(dn==0&&dm==1){return;}
+   /*上*/     m=-1;
+             n=0;
+		}else if(e.keyCode==39&&n!=-1&&m!=0){
+                if(dn==-1&&dm==0){return;}
+                  n=1;
+            /*右*/m=0;
+		}else if(e.keyCode==40&&m!=-1&&n!=0){
+                if(dn==0&&dm==-1){ return;}
+	        n=0;
+            m=1;//下
+		}
+       });
+        
+                // 操控蛇头运动方向 有bug版
+//        document.addEventListener('keydown',function(e){
+//        if(e.keyCode==37&&n!=1&&m!=0){
+//            n=-1;
+//            m=0; 
+//		}else if(e.keyCode==38&&n!=0&&m!=1){
+//   /*上*/     m=-1;
+//             n=0;
+//		}else if(e.keyCode==39&&n!=-1&&m!=0){
+//                  n=1;
+//            /*右*/m=0;
+//		}else if(e.keyCode==40&&m!=-1&&n!=0){
+//	        n=0;
+//            m=1;//下
+//		}
+//       });
+        
+          RandomFood();
+      //动画
+       var showSnake= setInterval(function () {
+            if (play) {
+                alert("游戏结束");
+                clearInterval(showSnake);
+                return;
+            }
+            //先擦除再绘制 不断重复
+            /*有动画效果的游戏基本是这种原理先擦除再绘制*/
+            tools.clearRect(0, 0, 600, 600);
+            tools.beginPath();
+            tools.fillStyle = '#ff4880';
+            tools.arc(x + 15, y + 15, 15, 0, Math.PI * 2);
+            tools.fill();
+            var oldHead = snake[0];
+ 
+            var newHead = {// 之所以产生动态效果的原因是： 每次都会删除尾部加上一个新的头：产生一种让别人觉得前进的感觉，如果吃到了食物就不删除尾部，就能做到变长的效果
+                x: oldHead.x + n,
+                y: oldHead.y + m
+            }
+            
+ 
+            //在这里用 新头的位置 来对 旧的身体进行判断
+            for (var i = 0; i < snake.length; i++) {
+                if (snake[i].x == newHead.x && snake[i].y == newHead.y) {  play = true;
+                }
+                if (i === 0) {
+                    tools.fillStyle = 'rgba(248,119,60,1)';
+                } else {
+                    tools.fillStyle = '#ac5589';
+                }
+                tools.fillRect(snake[i].x * 30, snake[i].y * 30, 30, 30);
+            }
+            //游戏判定
+            //把新添加的放在头部，每次定时器循环都会调用一次所以有了前进的效果
+            if (newHead.x < 0 || newHead.y < 0 || newHead.x * 30 >= 600 || newHead.y * 30 >= 600) {
+                /*用新创建的头来判定就可以在碰到墙之后在再次生成头之前取消定时器（这样就不会有半一截头插入到墙里面的情况）*/
+                play = true;
+            } else {
+                snake.unshift(newHead);
+                if (snake[0].x * 30 == x && snake[0].y * 30 == y) {
+                    RandomFood();
+                } else {
+                    snake.pop(); //删除数组最后一个元素
+                }
+            }
+        }, 200);
+        
+      //随机生成食物方法。
+    function RandomFood(){
+    var xd=Math.floor(Math.random()*20);
+    var yd=Math.floor(Math.random()*20);
+         for(let i=0;i<snake.length;i++){
+             if(snake[i].x==xd&&snake[i].y==yd){
+                 RandomFood();
+                 return;
+             }
+         }
+        x=xd*30;
+        y=yd*30;
+    }
+ 
+    
+ 
+ 
+    </script>
+</body>
+</html>
